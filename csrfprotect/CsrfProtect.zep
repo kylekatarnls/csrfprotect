@@ -8,19 +8,29 @@ class CsrfProtect
 	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
 	const TOKENS_LIMIT = 5000;
 
+	protected static function prefixedIdentifier(string identifier = "") -> string
+	{
+		return constant(get_called_class() . '::SESSION_PREFIX') . identifier;
+	}
+
 	protected static function identifierExists(string identifier = "") -> boolean
 	{
-		return isset(_SESSION[CsrfProtect::SESSION_PREFIX . identifier])
-		&& is_array(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+		let identifier = self::prefixedIdentifier(identifier);
+
+		return isset(_SESSION[identifier])
+		&& is_array(_SESSION[identifier]);
 	}
 
 	public static function checkPostToken(string identifier = "") -> boolean
 	{
-		if empty _POST[CsrfProtect::POST_KEY] {
+		string postKey;
+		let postKey = constant(get_called_class() . '::POST_KEY');
+
+		if empty _POST[postKey] {
 			return false;
 		}
 
-		return self::checkToken(_POST[CsrfProtect::POST_KEY], identifier);
+		return self::checkToken(_POST[postKey], identifier);
 	}
 
 	public static function getTokenIndex(string token = "", string identifier = "") -> int | string | boolean
@@ -29,15 +39,18 @@ class CsrfProtect
 			session_start();
 		}
 
+		string postKey;
+		let postKey = constant(get_called_class() . '::POST_KEY');
+
 		if empty token {
-			if empty _POST[CsrfProtect::POST_KEY] {
+			if empty _POST[postKey] {
 				return false;
 			}
-			let token = (string) _POST[CsrfProtect::POST_KEY];
+			let token = (string) _POST[postKey];
 		}
 
 		if self::identifierExists(identifier) {
-			return array_search(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+			return array_search(token, _SESSION[self::prefixedIdentifier(identifier)]);
 		}
 
 		return false;
@@ -49,7 +62,7 @@ class CsrfProtect
 		let key = self::getTokenIndex(token, identifier);
 
 		if key !== false {
-			unset(_SESSION[CsrfProtect::SESSION_PREFIX . identifier][key]);
+			unset(_SESSION[self::prefixedIdentifier(identifier)][key]);
 			return true;
 		}
 
@@ -67,22 +80,32 @@ class CsrfProtect
 			session_start();
 		}
 
+		string tokenChars;
+		let tokenChars = constant(get_called_class() . '::TOKEN_CHARS');
+
+		string tokenLength;
+		let tokenLength = constant(get_called_class() . '::TOKEN_LENGTH');
+
 		string token = "";
-		int charsCount = strlen(CsrfProtect::TOKEN_CHARS);
+		int charsCount = strlen(tokenChars);
 		int i = 0;
-		while i < CsrfProtect::TOKEN_LENGTH {
-			let token .= substr(CsrfProtect::TOKEN_CHARS, mt_rand(0, charsCount), 1);
+		while i < tokenLength {
+			let token .= substr(tokenChars, mt_rand(0, charsCount), 1);
 			let i = i + 1;
 		}
 
+		let identifier = self::prefixedIdentifier(identifier);
+
 		if ! self::identifierExists(identifier) {
-			let _SESSION[CsrfProtect::SESSION_PREFIX . identifier] = [];
+			let _SESSION[identifier] = [];
 		} else {
-			while count(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]) > CsrfProtect::TOKENS_LIMIT {
-				array_shift(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+			int tokenLimit;
+			let tokenLimit = constant(get_called_class() . '::TOKENS_LIMIT');
+			while count(_SESSION[identifier]) > tokenLimit {
+				array_shift(_SESSION[identifier]);
 			}
 		}
-		array_push(_SESSION[CsrfProtect::SESSION_PREFIX . identifier], token);
+		array_push(_SESSION[identifier], token);
 
 		return token;
 	}
@@ -91,7 +114,7 @@ class CsrfProtect
 	{
 		return "<input " .
 			"type=\"hidden\" " .
-			"name=\"" . CsrfProtect::POST_KEY . "\" " .
+			"name=\"" . constant(get_called_class() . '::POST_KEY') . "\" " .
 			"value=\"" . self::getToken(identifier) . "\"" .
 		">";
 	}
