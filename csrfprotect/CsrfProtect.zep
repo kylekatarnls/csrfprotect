@@ -10,6 +10,10 @@ class CsrfProtect
 
 	public static function checkPostToken(string identifier) -> boolean
 	{
+		if empty _POST[CsrfProtect::POST_KEY] {
+			return false;
+		}
+
 		return self::checkToken(_POST[CsrfProtect::POST_KEY], identifier);
 	}
 
@@ -19,7 +23,16 @@ class CsrfProtect
 			session_start();
 		}
 
-		return in_array(empty token ? _POST[CsrfProtect::POST_KEY] : token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+		if empty token {
+			if empty _POST[CsrfProtect::POST_KEY] {
+				return false;
+			}
+			let token = (string) _POST[CsrfProtect::POST_KEY];
+		}
+
+		return isset(_SESSION[CsrfProtect::SESSION_PREFIX . identifier])
+			&& is_array(_SESSION[CsrfProtect::SESSION_PREFIX . identifier])
+			&& in_array(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 	}
 
 	public static function getToken(string identifier) -> string
