@@ -17,6 +17,7 @@
 #include "kernel/fcall.h"
 #include "kernel/memory.h"
 #include "kernel/concat.h"
+#include "kernel/variables.h"
 #include "kernel/string.h"
 #include "kernel/math.h"
 
@@ -47,9 +48,14 @@ PHP_METHOD(CsrfProtect_CsrfProtect, checkPostToken) {
 
 	ZEPHIR_MM_GROW();
 	zephir_get_global(&_POST, SS("_POST") TSRMLS_CC);
-	zephir_fetch_params(1, 1, 0, &identifier_param);
+	zephir_fetch_params(1, 0, 1, &identifier_param);
 
-	zephir_get_strval(identifier, identifier_param);
+	if (!identifier_param) {
+		ZEPHIR_INIT_VAR(identifier);
+		ZVAL_STRING(identifier, "", 1);
+	} else {
+		zephir_get_strval(identifier, identifier_param);
+	}
 
 
 	zephir_array_fetch_string(&_0, _POST, SL("_csrf"), PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 13 TSRMLS_CC);
@@ -65,18 +71,28 @@ PHP_METHOD(CsrfProtect_CsrfProtect, checkPostToken) {
 
 PHP_METHOD(CsrfProtect_CsrfProtect, checkToken) {
 
-	zend_bool _5, _8;
+	zend_bool _11, _14;
 	int ZEPHIR_LAST_CALL_STATUS;
-	zval *token_param = NULL, *identifier_param = NULL, *_POST, *_SESSION, *_0 = NULL, *_6, *_9, *_1$$4, *_2$$4;
-	zval *token = NULL, *identifier = NULL, *_4, *_7, *_10, *_3$$4 = NULL;
+	zval *token_param = NULL, *identifier_param = NULL, *_POST, *_SESSION, *_0 = NULL, *_7, *_9 = NULL, *_10 = NULL, *_12, *_15, *_1$$4, *_4$$4, *_3$$5;
+	zval *token = NULL, *identifier = NULL, *_6 = NULL, *_8, *_13, *_16, *_5$$4 = NULL, *_2$$5;
 
 	ZEPHIR_MM_GROW();
 	zephir_get_global(&_SESSION, SS("_SESSION") TSRMLS_CC);
 	zephir_get_global(&_POST, SS("_POST") TSRMLS_CC);
-	zephir_fetch_params(1, 2, 0, &token_param, &identifier_param);
+	zephir_fetch_params(1, 0, 2, &token_param, &identifier_param);
 
-	zephir_get_strval(token, token_param);
-	zephir_get_strval(identifier, identifier_param);
+	if (!token_param) {
+		ZEPHIR_INIT_VAR(token);
+		ZVAL_STRING(token, "", 1);
+	} else {
+		zephir_get_strval(token, token_param);
+	}
+	if (!identifier_param) {
+		ZEPHIR_INIT_VAR(identifier);
+		ZVAL_STRING(identifier, "", 1);
+	} else {
+		zephir_get_strval(identifier, identifier_param);
+	}
 
 
 	ZEPHIR_CALL_FUNCTION(&_0, "session_id", NULL, 1);
@@ -86,32 +102,52 @@ PHP_METHOD(CsrfProtect_CsrfProtect, checkToken) {
 		zephir_check_call_status();
 	}
 	if (ZEPHIR_IS_EMPTY(token)) {
-		zephir_array_fetch_string(&_1$$4, _POST, SL("_csrf"), PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 27 TSRMLS_CC);
+		php_printf("%s", "Empty token<br>");
+		zephir_array_fetch_string(&_1$$4, _POST, SL("_csrf"), PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 28 TSRMLS_CC);
 		if (ZEPHIR_IS_EMPTY(_1$$4)) {
+			ZEPHIR_INIT_VAR(_2$$5);
+			ZEPHIR_CONCAT_SS(_2$$5, "_csrf", "<br>");
+			zend_print_zval(_2$$5, 0);
+			zephir_array_fetch_string(&_3$$5, _POST, SL("_csrf"), PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 30 TSRMLS_CC);
+			zephir_var_dump(&_3$$5 TSRMLS_CC);
+			php_printf("%s", "<br>");
 			RETURN_MM_BOOL(0);
 		}
-		ZEPHIR_OBS_VAR(_2$$4);
-		zephir_array_fetch_string(&_2$$4, _POST, SL("_csrf"), PH_NOISY, "csrfprotect/CsrfProtect.zep", 30 TSRMLS_CC);
-		zephir_get_strval(_3$$4, _2$$4);
-		ZEPHIR_CPY_WRT(token, _3$$4);
+		ZEPHIR_OBS_VAR(_4$$4);
+		zephir_array_fetch_string(&_4$$4, _POST, SL("_csrf"), PH_NOISY, "csrfprotect/CsrfProtect.zep", 34 TSRMLS_CC);
+		zephir_get_strval(_5$$4, _4$$4);
+		ZEPHIR_CPY_WRT(token, _5$$4);
 	}
-	ZEPHIR_INIT_VAR(_4);
-	ZEPHIR_CONCAT_SV(_4, "_csrf_", identifier);
-	_5 = zephir_array_isset(_SESSION, _4);
-	if (_5) {
-		ZEPHIR_INIT_VAR(_7);
-		ZEPHIR_CONCAT_SV(_7, "_csrf_", identifier);
-		zephir_array_fetch(&_6, _SESSION, _7, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 34 TSRMLS_CC);
-		_5 = Z_TYPE_P(_6) == IS_ARRAY;
+	ZEPHIR_INIT_VAR(_6);
+	ZEPHIR_CONCAT_SV(_6, "_csrf_", identifier);
+	ZEPHIR_INIT_VAR(_8);
+	ZEPHIR_CONCAT_SV(_8, "_csrf_", identifier);
+	zephir_array_fetch(&_7, _SESSION, _8, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 36 TSRMLS_CC);
+	ZEPHIR_INIT_VAR(_9);
+	ZEPHIR_CPY_WRT(_9, token);
+	zephir_var_dump(&_9 TSRMLS_CC);
+	ZEPHIR_INIT_VAR(_10);
+	ZEPHIR_CPY_WRT(_10, _6);
+	zephir_var_dump(&_10 TSRMLS_CC);
+	zephir_var_dump(&_7 TSRMLS_CC);
+	php_printf("%s", "<br>");
+	ZEPHIR_INIT_LNVAR(_6);
+	ZEPHIR_CONCAT_SV(_6, "_csrf_", identifier);
+	_11 = zephir_array_isset(_SESSION, _6);
+	if (_11) {
+		ZEPHIR_INIT_VAR(_13);
+		ZEPHIR_CONCAT_SV(_13, "_csrf_", identifier);
+		zephir_array_fetch(&_12, _SESSION, _13, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 40 TSRMLS_CC);
+		_11 = Z_TYPE_P(_12) == IS_ARRAY;
 	}
-	_8 = _5;
-	if (_8) {
-		ZEPHIR_INIT_VAR(_10);
-		ZEPHIR_CONCAT_SV(_10, "_csrf_", identifier);
-		zephir_array_fetch(&_9, _SESSION, _10, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 35 TSRMLS_CC);
-		_8 = zephir_fast_in_array(token, _9 TSRMLS_CC);
+	_14 = _11;
+	if (_14) {
+		ZEPHIR_INIT_VAR(_16);
+		ZEPHIR_CONCAT_SV(_16, "_csrf_", identifier);
+		zephir_array_fetch(&_15, _SESSION, _16, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 41 TSRMLS_CC);
+		_14 = zephir_fast_in_array(token, _15 TSRMLS_CC);
 	}
-	RETURN_MM_BOOL(_8);
+	RETURN_MM_BOOL(_14);
 
 }
 
@@ -124,9 +160,14 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getToken) {
 
 	ZEPHIR_MM_GROW();
 	zephir_get_global(&_SESSION, SS("_SESSION") TSRMLS_CC);
-	zephir_fetch_params(1, 1, 0, &identifier_param);
+	zephir_fetch_params(1, 0, 1, &identifier_param);
 
-	zephir_get_strval(identifier, identifier_param);
+	if (!identifier_param) {
+		ZEPHIR_INIT_VAR(identifier);
+		ZVAL_STRING(identifier, "", 1);
+	} else {
+		zephir_get_strval(identifier, identifier_param);
+	}
 
 
 	ZEPHIR_CALL_FUNCTION(&_0, "session_id", NULL, 1);
@@ -162,7 +203,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getToken) {
 	}
 	ZEPHIR_INIT_VAR(_9);
 	ZEPHIR_CONCAT_SV(_9, "_csrf_", identifier);
-	zephir_array_fetch(&_8, _SESSION, _9, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 52 TSRMLS_CC);
+	zephir_array_fetch(&_8, _SESSION, _9, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 58 TSRMLS_CC);
 	if (ZEPHIR_IS_EMPTY(_8)) {
 		ZEPHIR_INIT_VAR(_10$$5);
 		array_init(_10$$5);
@@ -177,13 +218,13 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getToken) {
 		while (1) {
 			ZEPHIR_INIT_LNVAR(_14$$6);
 			ZEPHIR_CONCAT_SV(_14$$6, "_csrf_", identifier);
-			zephir_array_fetch(&_13$$6, _SESSION, _14$$6, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 55 TSRMLS_CC);
+			zephir_array_fetch(&_13$$6, _SESSION, _14$$6, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 61 TSRMLS_CC);
 			if (!(zephir_fast_count_int(_13$$6 TSRMLS_CC) > 5000)) {
 				break;
 			}
 			ZEPHIR_INIT_LNVAR(_16$$7);
 			ZEPHIR_CONCAT_SV(_16$$7, "_csrf_", identifier);
-			zephir_array_fetch(&_15$$7, _SESSION, _16$$7, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 56 TSRMLS_CC);
+			zephir_array_fetch(&_15$$7, _SESSION, _16$$7, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 62 TSRMLS_CC);
 			ZEPHIR_MAKE_REF(_15$$7);
 			ZEPHIR_CALL_FUNCTION(NULL, "array_shift", &_17, 3, _15$$7);
 			ZEPHIR_UNREF(_15$$7);
@@ -192,7 +233,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getToken) {
 	}
 	ZEPHIR_INIT_VAR(_19);
 	ZEPHIR_CONCAT_SV(_19, "_csrf_", identifier);
-	zephir_array_fetch(&_18, _SESSION, _19, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 59 TSRMLS_CC);
+	zephir_array_fetch(&_18, _SESSION, _19, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 65 TSRMLS_CC);
 	ZEPHIR_MAKE_REF(_18);
 	ZEPHIR_CALL_FUNCTION(NULL, "array_push", NULL, 4, _18, token);
 	ZEPHIR_UNREF(_18);
@@ -208,9 +249,14 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getTag) {
 	zval *identifier = NULL;
 
 	ZEPHIR_MM_GROW();
-	zephir_fetch_params(1, 1, 0, &identifier_param);
+	zephir_fetch_params(1, 0, 1, &identifier_param);
 
-	zephir_get_strval(identifier, identifier_param);
+	if (!identifier_param) {
+		ZEPHIR_INIT_VAR(identifier);
+		ZVAL_STRING(identifier, "", 1);
+	} else {
+		zephir_get_strval(identifier, identifier_param);
+	}
 
 
 	ZEPHIR_CALL_SELF(&_0, "gettoken", NULL, 0, identifier);

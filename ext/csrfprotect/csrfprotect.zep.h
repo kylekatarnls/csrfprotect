@@ -8,20 +8,20 @@ PHP_METHOD(CsrfProtect_CsrfProtect, checkToken);
 PHP_METHOD(CsrfProtect_CsrfProtect, getToken);
 PHP_METHOD(CsrfProtect_CsrfProtect, getTag);
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_checkposttoken, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_checkposttoken, 0, 0, 0)
 	ZEND_ARG_INFO(0, identifier)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_checktoken, 0, 0, 2)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_checktoken, 0, 0, 0)
 	ZEND_ARG_INFO(0, token)
 	ZEND_ARG_INFO(0, identifier)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_gettoken, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_gettoken, 0, 0, 0)
 	ZEND_ARG_INFO(0, identifier)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_gettag, 0, 0, 1)
+ZEND_BEGIN_ARG_INFO_EX(arginfo_csrfprotect_csrfprotect_gettag, 0, 0, 0)
 	ZEND_ARG_INFO(0, identifier)
 ZEND_END_ARG_INFO()
 

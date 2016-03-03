@@ -8,7 +8,7 @@ class CsrfProtect
 	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
 	const TOKENS_LIMIT = 5000;
 
-	public static function checkPostToken(string identifier) -> boolean
+	public static function checkPostToken(string identifier = "") -> boolean
 	{
 		if empty _POST[CsrfProtect::POST_KEY] {
 			return false;
@@ -17,7 +17,7 @@ class CsrfProtect
 		return self::checkToken(_POST[CsrfProtect::POST_KEY], identifier);
 	}
 
-	public static function checkToken(string token, string identifier) -> boolean
+	public static function checkToken(string token = "", string identifier = "") -> boolean
 	{
 		if ! session_id() {
 			session_start();
@@ -35,7 +35,7 @@ class CsrfProtect
 			&& in_array(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 	}
 
-	public static function getToken(string identifier) -> string
+	public static function getToken(string identifier = "") -> string
 	{
 		if ! session_id() {
 			session_start();
@@ -61,7 +61,7 @@ class CsrfProtect
 		return token;
 	}
 
-	public static function getTag(string identifier) -> string
+	public static function getTag(string identifier = "") -> string
 	{
 		return "<input " .
 			"type=\"hidden\" " .
