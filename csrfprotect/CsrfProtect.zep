@@ -14,7 +14,7 @@ class CsrfProtect
 			session_start();
 		}
 
-		return in_array(_POST[static::POST_KEY], _SESSION[static::SESSION_PREFIX . identifier]);
+		return in_array(_POST[CsrfProtect::POST_KEY], _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 	}
 
 	public static function getToken(string identifier)
@@ -24,19 +24,19 @@ class CsrfProtect
 		}
 
 		string token;
-		int charsCount = strlen(static::TOKEN_CHARS);
-		for int i = 0; i < static::TOKEN_LENGTH; i++ {
-			token .= substr(static::TOKEN_CHARS, mt_rand(0, charsCount), 1);
+		int charsCount = strlen(CsrfProtect::TOKEN_CHARS);
+		for int i = 0; i < CsrfProtect::TOKEN_LENGTH; i++ {
+			token .= substr(CsrfProtect::TOKEN_CHARS, mt_rand(0, charsCount), 1);
 		}
 
-		if empty _SESSION[static::SESSION_PREFIX . identifier] {
-			_SESSION[static::SESSION_PREFIX . identifier] = [];
+		if empty _SESSION[CsrfProtect::SESSION_PREFIX . identifier] {
+			_SESSION[CsrfProtect::SESSION_PREFIX . identifier] = [];
 		} else {
-			while count(_SESSION[static::SESSION_PREFIX . identifier]) > static::TOKENS_LIMIT {
-				array_shift(_SESSION[static::SESSION_PREFIX . identifier]);
+			while count(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]) > CsrfProtect::TOKENS_LIMIT {
+				array_shift(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 			}
 		}
-		_SESSION[static::SESSION_PREFIX . identifier][] = token;
+		_SESSION[CsrfProtect::SESSION_PREFIX . identifier][] = token;
 
 		return token;
 	}
