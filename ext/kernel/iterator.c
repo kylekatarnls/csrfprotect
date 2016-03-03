@@ -31,8 +31,8 @@
 /**
  * Returns an iterator from the object
  */
-zend_object_iterator *zephir_get_iterator(zval *iterator)
-{
+zend_object_iterator *zephir_get_iterator(zval *iterator TSRMLS_DC) {
+
 	zend_class_entry *ce;
 	zend_object_iterator *it;
 
@@ -41,7 +41,7 @@ zend_object_iterator *zephir_get_iterator(zval *iterator)
 	}
 
 	ce = Z_OBJCE_P(iterator);
-	it = ce->get_iterator(ce, iterator, 0);
+	it = ce->get_iterator(ce, iterator, 0 TSRMLS_CC);
 	if (!it || EG(exception)) {
 		return NULL;
 	}
