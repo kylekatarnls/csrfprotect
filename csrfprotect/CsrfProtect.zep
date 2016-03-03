@@ -25,7 +25,8 @@ class CsrfProtect
 
 		string token;
 		int charsCount = strlen(CsrfProtect::TOKEN_CHARS);
-		for int i = 0; i < CsrfProtect::TOKEN_LENGTH; i++ {
+		int i;
+		for i = 0; i < CsrfProtect::TOKEN_LENGTH; i++ {
 			token .= substr(CsrfProtect::TOKEN_CHARS, mt_rand(0, charsCount), 1);
 		}
 
