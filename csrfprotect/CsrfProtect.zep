@@ -17,7 +17,7 @@ class CsrfProtect
 		return self::checkToken(_POST[CsrfProtect::POST_KEY], identifier);
 	}
 
-	public static function checkToken(string token = "", string identifier = "") -> boolean
+	public static function getTokenIndex(string token = "", string identifier = "") -> int | string | boolean
 	{
 		if ! session_id() {
 			session_start();
@@ -30,9 +30,27 @@ class CsrfProtect
 			let token = (string) _POST[CsrfProtect::POST_KEY];
 		}
 
-		return isset(_SESSION[CsrfProtect::SESSION_PREFIX . identifier])
-			&& is_array(_SESSION[CsrfProtect::SESSION_PREFIX . identifier])
-			&& in_array(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+		if empty _SESSION[CsrfProtect::SESSION_PREFIX . identifier] {
+			return false;
+		}
+
+		if is_array(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]) {
+			return array_search(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+		}
+
+		return false;
+	}
+
+	public static function checkToken(string token = "", string identifier = "") -> boolean
+	{
+		let key = self::getTokenIndex(token, identifier);
+
+		if key !== false {
+			unset(_SESSION[CsrfProtect::SESSION_PREFIX . identifier][key]);
+			return true;
+		}
+
+		return false;
 	}
 
 	public static function getToken(string identifier = "") -> string
