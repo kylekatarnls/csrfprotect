@@ -8,13 +8,22 @@ class CsrfProtect
 	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
 	const TOKENS_LIMIT = 5000;
 
-	public static function checkToken(string identifier)
+	public static function checkPostToken(string identifier)
+	{
+		return self::checkToken(_POST[CsrfProtect::POST_KEY], identifier);
+	}
+
+	public static function checkToken(string token, string identifier)
 	{
 		if ! session_id() {
 			session_start();
 		}
 
-		return in_array(_POST[CsrfProtect::POST_KEY], _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+		if empty token {
+			let token = _POST[CsrfProtect::POST_KEY];
+		}
+
+		return in_array(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 	}
 
 	public static function getToken(string identifier)
@@ -41,5 +50,13 @@ class CsrfProtect
 		array_push(_SESSION[CsrfProtect::SESSION_PREFIX . identifier], token);
 
 		return token;
+	}
+
+	public static function getTag(string identifier)
+	{
+		string token;
+		let token = self::getToken(identifier);
+
+		return "<input type=\"hidden\" name=\"" . CsrfProtect::POST_KEY . "\" value=\"" . token . "\">";
 	}
 }
