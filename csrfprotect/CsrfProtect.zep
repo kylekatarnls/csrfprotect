@@ -17,8 +17,7 @@ class CsrfProtect
 	{
 		let identifier = self::prefixedIdentifier(identifier);
 
-		return isset(_SESSION[identifier])
-		&& is_array(_SESSION[identifier]);
+		return isset(_SESSION[identifier]) && is_array(_SESSION[identifier]);
 	}
 
 	public static function checkPostToken(string identifier = "") -> boolean
