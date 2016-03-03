@@ -27,18 +27,18 @@ class CsrfProtect
 		int charsCount = strlen(CsrfProtect::TOKEN_CHARS);
 		int i = 0;
 		while i < CsrfProtect::TOKEN_LENGTH {
-			token .= substr(CsrfProtect::TOKEN_CHARS, mt_rand(0, charsCount), 1);
-			i++;
+			let token .= substr(CsrfProtect::TOKEN_CHARS, mt_rand(0, charsCount), 1);
+			let i = i + 1;
 		}
 
 		if empty _SESSION[CsrfProtect::SESSION_PREFIX . identifier] {
-			_SESSION[CsrfProtect::SESSION_PREFIX . identifier] = [];
+			let _SESSION[CsrfProtect::SESSION_PREFIX . identifier] = [];
 		} else {
 			while count(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]) > CsrfProtect::TOKENS_LIMIT {
 				array_shift(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 			}
 		}
-		_SESSION[CsrfProtect::SESSION_PREFIX . identifier][] = token;
+		array_push(_SESSION[CsrfProtect::SESSION_PREFIX . identifier], token);
 
 		return token;
 	}
