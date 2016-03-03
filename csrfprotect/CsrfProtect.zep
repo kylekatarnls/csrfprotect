@@ -43,6 +43,7 @@ class CsrfProtect
 
 	public static function checkToken(string token = "", string identifier = "") -> boolean
 	{
+		var key;
 		let key = self::getTokenIndex(token, identifier);
 
 		if key !== false {
