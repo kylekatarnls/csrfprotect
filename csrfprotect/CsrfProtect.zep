@@ -83,7 +83,7 @@ class CsrfProtect
 		string tokenChars;
 		let tokenChars = (string) constant(get_called_class() . "::TOKEN_CHARS");
 
-		string tokenLength;
+		int tokenLength;
 		let tokenLength = (int) constant(get_called_class() . "::TOKEN_LENGTH");
 
 		string token = "";
