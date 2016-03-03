@@ -8,6 +8,12 @@ class CsrfProtect
 	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
 	const TOKENS_LIMIT = 5000;
 
+	protected static function identifierExists(string identifier = "") -> boolean
+	{
+		return isset(_SESSION[CsrfProtect::SESSION_PREFIX . identifier])
+		&& is_array(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
+	}
+
 	public static function checkPostToken(string identifier = "") -> boolean
 	{
 		if empty _POST[CsrfProtect::POST_KEY] {
@@ -30,11 +36,7 @@ class CsrfProtect
 			let token = (string) _POST[CsrfProtect::POST_KEY];
 		}
 
-		if empty _SESSION[CsrfProtect::SESSION_PREFIX . identifier] {
-			return false;
-		}
-
-		if is_array(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]) {
+		if self::identifierExists(identifier) {
 			return array_search(token, _SESSION[CsrfProtect::SESSION_PREFIX . identifier]);
 		}
 
@@ -53,6 +55,11 @@ class CsrfProtect
 		return false;
 	}
 
+	public static function isValidToken(string token = "", string identifier = "") -> boolean
+	{
+		return self::getTokenIndex(token, identifier) !== false;
+	}
+
 	public static function getToken(string identifier = "") -> string
 	{
 		if ! session_id() {
@@ -67,7 +74,7 @@ class CsrfProtect
 			let i = i + 1;
 		}
 
-		if empty _SESSION[CsrfProtect::SESSION_PREFIX . identifier] {
+		if ! self::identifierExists(identifier) {
 			let _SESSION[CsrfProtect::SESSION_PREFIX . identifier] = [];
 		} else {
 			while count(_SESSION[CsrfProtect::SESSION_PREFIX . identifier]) > CsrfProtect::TOKENS_LIMIT {
