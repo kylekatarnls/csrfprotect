@@ -84,7 +84,7 @@ class CsrfProtect
 		let tokenChars = (string) constant(get_called_class() . "::TOKEN_CHARS");
 
 		string tokenLength;
-		let tokenLength = (string) constant(get_called_class() . "::TOKEN_LENGTH");
+		let tokenLength = (int) constant(get_called_class() . "::TOKEN_LENGTH");
 
 		string token = "";
 		int charsCount = strlen(tokenChars);
@@ -100,7 +100,7 @@ class CsrfProtect
 			let _SESSION[identifier] = [];
 		} else {
 			int tokenLimit;
-			let tokenLimit = (string) constant(get_called_class() . "::TOKENS_LIMIT");
+			let tokenLimit = (int) constant(get_called_class() . "::TOKENS_LIMIT");
 			while count(_SESSION[identifier]) > tokenLimit {
 				array_shift(_SESSION[identifier]);
 			}
