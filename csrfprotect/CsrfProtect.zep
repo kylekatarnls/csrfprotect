@@ -10,7 +10,7 @@ class CsrfProtect
 
 	protected static function prefixedIdentifier(string identifier = "") -> string
 	{
-		return constant(get_called_class() . "::SESSION_PREFIX") . identifier;
+		return (string) constant(get_called_class() . "::SESSION_PREFIX") . identifier;
 	}
 
 	protected static function identifierExists(string identifier = "") -> boolean
@@ -24,7 +24,7 @@ class CsrfProtect
 	public static function checkPostToken(string identifier = "") -> boolean
 	{
 		string postKey;
-		let postKey = constant(get_called_class() . "::POST_KEY");
+		let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
 		if empty _POST[postKey] {
 			return false;
@@ -40,7 +40,7 @@ class CsrfProtect
 		}
 
 		string postKey;
-		let postKey = constant(get_called_class() . "::POST_KEY");
+		let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
 		if empty token {
 			if empty _POST[postKey] {
@@ -81,10 +81,10 @@ class CsrfProtect
 		}
 
 		string tokenChars;
-		let tokenChars = constant(get_called_class() . "::TOKEN_CHARS");
+		let tokenChars = (string) constant(get_called_class() . "::TOKEN_CHARS");
 
 		string tokenLength;
-		let tokenLength = constant(get_called_class() . "::TOKEN_LENGTH");
+		let tokenLength = (string) constant(get_called_class() . "::TOKEN_LENGTH");
 
 		string token = "";
 		int charsCount = strlen(tokenChars);
@@ -100,7 +100,7 @@ class CsrfProtect
 			let _SESSION[identifier] = [];
 		} else {
 			int tokenLimit;
-			let tokenLimit = constant(get_called_class() . "::TOKENS_LIMIT");
+			let tokenLimit = (string) constant(get_called_class() . "::TOKENS_LIMIT");
 			while count(_SESSION[identifier]) > tokenLimit {
 				array_shift(_SESSION[identifier]);
 			}
