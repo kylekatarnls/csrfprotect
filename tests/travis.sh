@@ -11,4 +11,5 @@ git clone https://github.com/kylekatarnls/csrfprotect
 cd csrfprotect
 zephir build
 cd ..
+composer install --no-interaction --prefer-source --dev
 phpenv config-add tests/conf/php-csrfprotect.ini
