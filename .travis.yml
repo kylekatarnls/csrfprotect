@@ -9,6 +9,9 @@ php:
   - hhvm
   - nightly
 
+before_install:
+  - pip install codecov
+
 before_script:
   - travis_retry sudo apt-get update
   - travis_retry sudo apt-get install git gcc make re2c php5 php5-json php5-dev libpcre3-dev
@@ -25,8 +28,8 @@ after_script:
   - vendor/bin/test-reporter --coverage-report coverage.xml
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
 
 addons:
   code_climate:
-    repo_token: 3b348e5e3787bb2850977e8ae853a7fb3c370d539dec3a018adf088e9f7fed31
+    repo_token: 6316411d7a006bbe9742edb5462e63fac433ace5050cf3ffd448f0e19f61355d
