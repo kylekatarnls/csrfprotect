@@ -10,8 +10,20 @@ php:
   - nightly
 
 before_script:
-  - chmod +x tests/travis.sh
-  - travis_retry tests/travis.sh
+  - travis_retry apt-get update
+  - travis_retry apt-get install git gcc make re2c php5 php5-json php5-dev libpcre3-dev
+  - travis_retry git clone https://github.com/phalcon/zephir
+  - cd zephir
+  - travis_retry ./install-json
+  - travis_retry ./install -c
+  - cd ..
+  - rm -r zephir
+  - travis_retry git clone https://github.com/kylekatarnls/csrfprotect
+  - cd csrfprotect
+  - travis_retry zephir build
+  - cd ..
+  - rm -r csrfprotect
+  - phpenv config-add tests/conf/php-csrfprotect.ini
 
 script:
   - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml

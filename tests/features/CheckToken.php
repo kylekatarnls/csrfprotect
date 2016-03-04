@@ -2,7 +2,7 @@
 
 use CsrfProtect\CsrfProtect as Csrf;
 
-class GenerateTagTest extends \PHPUnit_Framework_TestCase
+class CheckTokenTest extends \PHPUnit_Framework_TestCase
 {
     public function testCheckPostToken()
     {
