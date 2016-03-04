@@ -92,6 +92,62 @@ if (isset($_POST['message'])) {
 <a href="?_csrf=<?php echo Csrf::getToken($_SESSION['user_id']); ?>">Click here!</a>
 ```
 
+## Configure CsrfProtect as you need
+
+```php
+<?php
+
+class ShortCsrf extends \CsrfProtect\CsrfProtect
+{
+    const TOKEN_LENGTH = 6;
+}
+
+class LongCsrf extends \CsrfProtect\CsrfProtect
+{
+    const TOKEN_LENGTH = 64;
+}
+
+echo ShortCsrf::getTag(); // Display an hidden input tag with a 6 chars token
+echo LongCsrf::getTag(); // Display an hidden input tag with a 64 chars token
+
+?>
+```
+
+Here are all the available settings and their default values:
+
+```php
+<?php
+
+class Csrf extends \CsrfProtect\CsrfProtect
+{
+	const POST_KEY = "_csrf";
+	const SESSION_PREFIX = "_csrf_";
+	const TOKEN_LENGTH = 32;
+	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
+	const TOKENS_LIMIT = 5000;
+}
+
+?>
+```
+
+## Extends CsrfProtect
+
+Example: display the input tage in a XHTML way: `<input />`
+```php
+<?php
+
+class Csrf extends \CsrfProtect\CsrfProtect
+{
+	public static function getTag($identifier = "")
+	{
+		return str_replace('>', ' />', parent::getTag($identifier));
+	}
+}
+
+?>
+```
+
+
 ## Installation
 
 You can install CsrfProtect anywhere Zephir can be installed.
