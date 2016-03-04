@@ -156,7 +156,7 @@ Here is an example with Debian/Ubuntu (we suppose you have PHP installed):
 ```shell
 sudo apt-get update
 sudo apt-get install git gcc make re2c php5 php5-json php5-dev libpcre3-dev
-git clone https://github.com/csrfprotect/zephir
+git clone https://github.com/phalcon/zephir
 cd zephir
 ./install-json
 ./install -c
@@ -177,7 +177,7 @@ If it's not, please see: http://docs.zephir-lang.com/en/latest/install.html
 
 Now you can download and build CsrfProtect
 ```shell
-git clone https://github.com/kylekatarnls/csrfprotect.git
+git clone https://github.com/kylekatarnls/csrfprotect
 cd csrfprotect
 zephir build
 ```
