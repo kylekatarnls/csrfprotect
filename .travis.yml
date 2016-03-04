@@ -10,6 +10,7 @@ php:
   - nightly
 
 before_script:
+  - chmod +x tests/travis.sh
   - travis_retry tests/travis.sh
 
 script:
