@@ -12,18 +12,18 @@ use \CsrfProtect\CsrfProtect as Csrf;
 session_start();
 
 if (isset($_POST['message'])) {
-	if (Csrf::checkToken()) {
-		echo 'Thanks for your message!';
-	} else {
-		echo 'Sorry, your session expired.';
-	}
+    if (Csrf::checkToken()) {
+        echo 'Thanks for your message!';
+    } else {
+        echo 'Sorry, your session expired.';
+    }
 }
 
 ?>
 <form method="post" action="">
-  <textarea name="message">
-	<input type="submit">
-	<?php echo Csrf::getTag(); ?>
+    <textarea name="message"></textarea>
+    <input type="submit">
+    <?php echo Csrf::getTag(); ?>
 </form>
 ```
 
@@ -37,18 +37,18 @@ use \CsrfProtect\CsrfProtect as Csrf;
 session_start();
 
 if (isset($_POST['message'])) {
-	if (Csrf::checkPostToken($_SESSION['user_id'])) {
-		echo 'Thanks for your message!';
-	} else {
-		echo 'Sorry, your session expired or you have log out.';
-	}
+    if (Csrf::checkPostToken($_SESSION['user_id'])) {
+        echo 'Thanks for your message!';
+    } else {
+        echo 'Sorry, your session expired or you have log out.';
+    }
 }
 
 ?>
 <form method="post" action="">
-  <textarea name="message">
-	<input type="submit">
-	<?php echo Csrf::getTag($_SESSION['user_id']); ?>
+    <textarea name="message"></textarea>
+    <input type="submit">
+    <?php echo Csrf::getTag($_SESSION['user_id']); ?>
 </form>
 ```
 
@@ -62,11 +62,11 @@ use \CsrfProtect\CsrfProtect as Csrf;
 session_start();
 
 if (isset($_POST['message'])) {
-	if (Csrf::checkToken($_GET['_csrf'])) {
-		echo 'Thanks for clicking!';
-	} else {
-		echo 'Sorry, your session expired.';
-	}
+    if (Csrf::checkToken($_GET['_csrf'])) {
+        echo 'Thanks for clicking!';
+    } else {
+        echo 'Sorry, your session expired.';
+    }
 }
 
 ?>
@@ -81,11 +81,11 @@ if (isset($_POST['message'])) {
 use \CsrfProtect\CsrfProtect as Csrf;
 
 if (isset($_POST['message'])) {
-	if (Csrf::checkToken($_GET['_csrf'], $_SESSION['user_id'])) {
-		echo 'Thanks for clicking!';
-	} else {
-		echo 'Sorry, your session expired.';
-	}
+    if (Csrf::checkToken($_GET['_csrf'], $_SESSION['user_id'])) {
+        echo 'Thanks for clicking!';
+    } else {
+        echo 'Sorry, your session expired.';
+    }
 }
 
 ?>
@@ -120,11 +120,11 @@ Here are all the available settings and their default values:
 
 class Csrf extends \CsrfProtect\CsrfProtect
 {
-	const POST_KEY = "_csrf";
-	const SESSION_PREFIX = "_csrf_";
-	const TOKEN_LENGTH = 32;
-	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
-	const TOKENS_LIMIT = 5000;
+    const POST_KEY = "_csrf";
+    const SESSION_PREFIX = "_csrf_";
+    const TOKEN_LENGTH = 32;
+    const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
+    const TOKENS_LIMIT = 5000;
 }
 
 ?>
@@ -138,10 +138,10 @@ Example: display the input tage in a XHTML way: `<input />`
 
 class Csrf extends \CsrfProtect\CsrfProtect
 {
-	public static function getTag($identifier = "")
-	{
-		return str_replace('>', ' />', parent::getTag($identifier));
-	}
+    public static function getTag($identifier = "")
+    {
+        return str_replace('>', ' />', parent::getTag($identifier));
+    }
 }
 
 ?>
