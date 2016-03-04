@@ -1,0 +1,5 @@
+finder:
+  exclude:
+    - ".temp"
+    - "tests"
+    - "ext"
