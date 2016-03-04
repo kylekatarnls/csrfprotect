@@ -9,9 +9,6 @@ php:
   - hhvm
   - nightly
 
-before_install:
-  - pip install codecov
-
 before_script:
   - travis_retry tests/travis.sh
 
@@ -22,7 +19,7 @@ after_script:
   - vendor/bin/test-reporter --coverage-report coverage.xml
 
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
 
 addons:
   code_climate:
