@@ -12,11 +12,18 @@
 #include "kernel/memory.h"
 #include "kernel/concat.h"
 
-void zephir_concat_ssssssvss(zval **result, const char *op1, zend_uint op1_len, const char *op2, zend_uint op2_len, const char *op3, zend_uint op3_len, const char *op4, zend_uint op4_len, const char *op5, zend_uint op5_len, const char *op6, zend_uint op6_len, zval *op7, const char *op8, zend_uint op8_len, const char *op9, zend_uint op9_len, int self_var TSRMLS_DC){
+void zephir_concat_sssvssvss(zval **result, const char *op1, zend_uint op1_len, const char *op2, zend_uint op2_len, const char *op3, zend_uint op3_len, zval *op4, const char *op5, zend_uint op5_len, const char *op6, zend_uint op6_len, zval *op7, const char *op8, zend_uint op8_len, const char *op9, zend_uint op9_len, int self_var TSRMLS_DC){
 
-	zval result_copy, op7_copy;
-	int use_copy = 0, use_copy7 = 0;
+	zval result_copy, op4_copy, op7_copy;
+	int use_copy = 0, use_copy4 = 0, use_copy7 = 0;
 	uint offset = 0, length;
+
+	if (Z_TYPE_P(op4) != IS_STRING) {
+	   zend_make_printable_zval(op4, &op4_copy, &use_copy4);
+	   if (use_copy4) {
+	       op4 = &op4_copy;
+	   }
+	}
 
 	if (Z_TYPE_P(op7) != IS_STRING) {
 	   zend_make_printable_zval(op7, &op7_copy, &use_copy7);
@@ -25,7 +32,7 @@ void zephir_concat_ssssssvss(zval **result, const char *op1, zend_uint op1_len, 
 	   }
 	}
 
-	length = op1_len + op2_len + op3_len + op4_len + op5_len + op6_len + Z_STRLEN_P(op7) + op8_len + op9_len;
+	length = op1_len + op2_len + op3_len + Z_STRLEN_P(op4) + op5_len + op6_len + Z_STRLEN_P(op7) + op8_len + op9_len;
 	if (self_var) {
 
 		if (Z_TYPE_PP(result) != IS_STRING) {
@@ -46,15 +53,19 @@ void zephir_concat_ssssssvss(zval **result, const char *op1, zend_uint op1_len, 
 	memcpy(Z_STRVAL_PP(result) + offset, op1, op1_len);
 	memcpy(Z_STRVAL_PP(result) + offset + op1_len, op2, op2_len);
 	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len, op3, op3_len);
-	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len, op4, op4_len);
-	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + op4_len, op5, op5_len);
-	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + op4_len + op5_len, op6, op6_len);
-	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + op4_len + op5_len + op6_len, Z_STRVAL_P(op7), Z_STRLEN_P(op7));
-	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + op4_len + op5_len + op6_len + Z_STRLEN_P(op7), op8, op8_len);
-	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + op4_len + op5_len + op6_len + Z_STRLEN_P(op7) + op8_len, op9, op9_len);
+	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len, Z_STRVAL_P(op4), Z_STRLEN_P(op4));
+	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + Z_STRLEN_P(op4), op5, op5_len);
+	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + Z_STRLEN_P(op4) + op5_len, op6, op6_len);
+	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + Z_STRLEN_P(op4) + op5_len + op6_len, Z_STRVAL_P(op7), Z_STRLEN_P(op7));
+	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + Z_STRLEN_P(op4) + op5_len + op6_len + Z_STRLEN_P(op7), op8, op8_len);
+	memcpy(Z_STRVAL_PP(result) + offset + op1_len + op2_len + op3_len + Z_STRLEN_P(op4) + op5_len + op6_len + Z_STRLEN_P(op7) + op8_len, op9, op9_len);
 	Z_STRVAL_PP(result)[length] = 0;
 	Z_TYPE_PP(result) = IS_STRING;
 	Z_STRLEN_PP(result) = length;
+
+	if (use_copy4) {
+	   zval_dtor(op4);
+	}
 
 	if (use_copy7) {
 	   zval_dtor(op7);
