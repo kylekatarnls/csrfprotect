@@ -87,7 +87,7 @@ class CsrfProtect
 
 		string token = "";
 		int charsCount;
-		let charsCount = strlen(tokenChars);
+		let charsCount = strlen(tokenChars) - 1;
 		int i = 0;
 		while i < tokenLength {
 			let token .= substr(tokenChars, mt_rand(0, charsCount), 1);
