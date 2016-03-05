@@ -2,120 +2,126 @@ namespace CsrfProtect;
 
 class CsrfProtect
 {
-	const POST_KEY = "_csrf";
-	const SESSION_PREFIX = "_csrf_";
-	const TOKEN_LENGTH = 32;
-	const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
-	const TOKENS_LIMIT = 5000;
+    const POST_KEY = "_csrf";
+    const SESSION_PREFIX = "_csrf_";
+    const TOKEN_LENGTH = 32;
+    const TOKEN_CHARS = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890_-";
+    const TOKENS_LIMIT = 5000;
 
-	protected static function prefixedIdentifier(string identifier = "") -> string
-	{
-		return (string) constant(get_called_class() . "::SESSION_PREFIX") . identifier;
-	}
+    protected static function initSession()
+    {
+        if (version_compare(phpversion(), '5.4.0', '>=')
+            ? (session_status() !== PHP_SESSION_ACTIVE)
+            : (session_id() !== ""
+        ) {
+            session_start();
+        }
+    }
 
-	protected static function identifierExists(string identifier = "") -> boolean
-	{
-		let identifier = self::prefixedIdentifier(identifier);
+    protected static function prefixedIdentifier(string identifier = "") -> string
+    {
+        return (string) constant(get_called_class() . "::SESSION_PREFIX") . identifier;
+    }
 
-		return isset(_SESSION[identifier]) && is_array(_SESSION[identifier]);
-	}
+    protected static function identifierExists(string identifier = "") -> boolean
+    {
+        let identifier = self::prefixedIdentifier(identifier);
 
-	public static function checkPostToken(string identifier = "") -> boolean
-	{
-		string postKey;
-		let postKey = (string) constant(get_called_class() . "::POST_KEY");
+        return isset(_SESSION[identifier]) && is_array(_SESSION[identifier]);
+    }
 
-		if empty _POST[postKey] {
-			return false;
-		}
+    public static function checkPostToken(string identifier = "") -> boolean
+    {
+        string postKey;
+        let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
-		return self::checkToken(_POST[postKey], identifier);
-	}
+        if empty _POST[postKey] {
+            return false;
+        }
 
-	public static function getTokenIndex(string token = "", string identifier = "") -> int | string | boolean
-	{
-		if ! session_id() {
-			session_start();
-		}
+        return self::checkToken(_POST[postKey], identifier);
+    }
 
-		string postKey;
-		let postKey = (string) constant(get_called_class() . "::POST_KEY");
+    public static function getTokenIndex(string token = "", string identifier = "") -> int | string | boolean
+    {
+        self::initSession();
 
-		if empty token {
-			if empty _POST[postKey] {
-				return false;
-			}
-			let token = (string) _POST[postKey];
-		}
+        string postKey;
+        let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
-		if self::identifierExists(identifier) {
-			return array_search(token, _SESSION[self::prefixedIdentifier(identifier)]);
-		}
+        if empty token {
+            if empty _POST[postKey] {
+                return false;
+            }
+            let token = (string) _POST[postKey];
+        }
 
-		return false;
-	}
+        if self::identifierExists(identifier) {
+            return array_search(token, _SESSION[self::prefixedIdentifier(identifier)]);
+        }
 
-	public static function checkToken(string token = "", string identifier = "") -> boolean
-	{
-		var key;
-		let key = self::getTokenIndex(token, identifier);
+        return false;
+    }
 
-		if key !== false {
-			unset(_SESSION[self::prefixedIdentifier(identifier)][key]);
-			return true;
-		}
+    public static function checkToken(string token = "", string identifier = "") -> boolean
+    {
+        var key;
+        let key = self::getTokenIndex(token, identifier);
 
-		return false;
-	}
+        if key !== false {
+            unset(_SESSION[self::prefixedIdentifier(identifier)][key]);
+            return true;
+        }
 
-	public static function isValidToken(string token = "", string identifier = "") -> boolean
-	{
-		return self::getTokenIndex(token, identifier) !== false;
-	}
+        return false;
+    }
 
-	public static function getToken(string identifier = "") -> string
-	{
-		if ! session_id() {
-			session_start();
-		}
+    public static function isValidToken(string token = "", string identifier = "") -> boolean
+    {
+        return self::getTokenIndex(token, identifier) !== false;
+    }
 
-		string tokenChars;
-		let tokenChars = (string) constant(get_called_class() . "::TOKEN_CHARS");
+    public static function getToken(string identifier = "") -> string
+    {
+        self::initSession();
 
-		int tokenLength;
-		let tokenLength = (int) constant(get_called_class() . "::TOKEN_LENGTH");
+        string tokenChars;
+        let tokenChars = (string) constant(get_called_class() . "::TOKEN_CHARS");
 
-		string token = "";
-		int charsCount;
-		let charsCount = strlen(tokenChars) - 1;
-		int i = 0;
-		while i < tokenLength {
-			let token .= substr(tokenChars, mt_rand(0, charsCount), 1);
-			let i = i + 1;
-		}
+        int tokenLength;
+        let tokenLength = (int) constant(get_called_class() . "::TOKEN_LENGTH");
 
-		let identifier = self::prefixedIdentifier(identifier);
+        string token = "";
+        int charsCount;
+        let charsCount = strlen(tokenChars) - 1;
+        int i = 0;
+        while i < tokenLength {
+            let token .= substr(tokenChars, mt_rand(0, charsCount), 1);
+            let i = i + 1;
+        }
 
-		if ! self::identifierExists(identifier) {
-			let _SESSION[identifier] = [];
-		} else {
-			int tokenLimit;
-			let tokenLimit = (int) constant(get_called_class() . "::TOKENS_LIMIT");
-			while count(_SESSION[identifier]) > tokenLimit {
-				array_shift(_SESSION[identifier]);
-			}
-		}
-		array_push(_SESSION[identifier], token);
+        let identifier = self::prefixedIdentifier(identifier);
 
-		return token;
-	}
+        if ! self::identifierExists(identifier) {
+            let _SESSION[identifier] = [];
+        } else {
+            int tokenLimit;
+            let tokenLimit = (int) constant(get_called_class() . "::TOKENS_LIMIT");
+            while count(_SESSION[identifier]) > tokenLimit {
+                array_shift(_SESSION[identifier]);
+            }
+        }
+        array_push(_SESSION[identifier], token);
 
-	public static function getTag(string identifier = "") -> string
-	{
-		return "<input " .
-			"type=\"hidden\" " .
-			"name=\"" . constant(get_called_class() . "::POST_KEY") . "\" " .
-			"value=\"" . self::getToken(identifier) . "\"" .
-		">";
-	}
+        return token;
+    }
+
+    public static function getTag(string identifier = "") -> string
+    {
+        return "<input " .
+            "type=\"hidden\" " .
+            "name=\"" . constant(get_called_class() . "::POST_KEY") . "\" " .
+            "value=\"" . self::getToken(identifier) . "\"" .
+        ">";
+    }
 }
