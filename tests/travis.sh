@@ -2,7 +2,7 @@
 
 mkdir .build-travis
 cd .build-travis
-git clone https://github.com/phalcon/zephir
+git clone -b patch-1 https://github.com/kylekatarnls/zephir
 cd zephir
 ./install -c
 cd ..
