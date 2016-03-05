@@ -22,7 +22,7 @@ class CheckTokenTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Csrf::checkToken($token), 'The CSRF token should be checked');
         $this->assertFalse(Csrf::isValidToken($token), 'The CSRF token should no longer be valid');
         $this->assertFalse(Csrf::checkToken($token), 'The CSRF token should no longer be checked');
-        $this->assertFalse(Csrf::checkPostToken($token), 'The POST CSRF token should not be checked');
+        $this->assertFalse(Csrf::checkPostToken(), 'The POST CSRF token should not be checked');
     }
 
     public function testIdentifiers()

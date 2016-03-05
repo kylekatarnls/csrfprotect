@@ -26,8 +26,6 @@ class CsrfProtect
 
     protected static function identifierExists(string identifier = "") -> boolean
     {
-        let identifier = self::prefixedIdentifier(identifier);
-
         return isset(_SESSION[identifier]) && is_array(_SESSION[identifier]);
     }
 
@@ -57,8 +55,10 @@ class CsrfProtect
             let token = (string) _POST[postKey];
         }
 
+        let identifier = self::prefixedIdentifier(identifier);
+
         if self::identifierExists(identifier) {
-            return array_search(token, _SESSION[self::prefixedIdentifier(identifier)]);
+            return array_search(token, _SESSION[identifier]);
         }
 
         return false;
