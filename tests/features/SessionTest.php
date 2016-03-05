@@ -2,6 +2,11 @@
 
 use CsrfProtect\CsrfProtect as Csrf;
 
+if (!class_exists('SessionTest', false))
+{
+    return;
+}
+
 class SessionTest extends \PHPUnit_Framework_TestCase
 {
     public function testSessionAutoStart()

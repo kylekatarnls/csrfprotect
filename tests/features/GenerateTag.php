@@ -2,6 +2,11 @@
 
 use CsrfProtect\CsrfProtect as Csrf;
 
+if (!class_exists('GenerateTagTest', false))
+{
+    return;
+}
+
 class GenerateTagTest extends \PHPUnit_Framework_TestCase
 {
     public function testTagSyntax()

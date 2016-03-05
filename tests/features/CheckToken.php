@@ -2,6 +2,11 @@
 
 use CsrfProtect\CsrfProtect as Csrf;
 
+if (!class_exists('CheckTokenTest', false))
+{
+    return;
+}
+
 class CheckTokenTest extends \PHPUnit_Framework_TestCase
 {
     public function testCheckPostToken()
