@@ -10,10 +10,11 @@ class CsrfProtect
 
     protected static function initSession()
     {
-        if (version_compare(phpversion(), '5.4.0', '>=')
-            ? (session_status() !== PHP_SESSION_ACTIVE)
-            : (session_id() !== ""
-        ) {
+        bool sessionStarted;
+        let sessionStarted = version_compare(phpversion(), "5.4.0", ">=")
+            ? (session_status() === PHP_SESSION_ACTIVE)
+            : (session_id() !== "");
+        if !sessionStarted {
             session_start();
         }
     }
