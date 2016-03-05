@@ -2,7 +2,6 @@
 
 git clone https://github.com/phalcon/zephir
 cd zephir
-./install-json
 ./install -c
 cd ..
 git clone https://github.com/kylekatarnls/csrfprotect
