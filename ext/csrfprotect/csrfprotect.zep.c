@@ -93,7 +93,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, identifierExists) {
 	zephir_get_strval(identifier, _0);
 	_1 = zephir_array_isset(_SESSION, identifier);
 	if (_1) {
-		zephir_array_fetch(&_2, _SESSION, identifier, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 21 TSRMLS_CC);
+		zephir_array_fetch(&_2, _SESSION, identifier, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 20 TSRMLS_CC);
 		_1 = Z_TYPE_P(_2) == IS_ARRAY;
 	}
 	RETURN_MM_BOOL(_1);
@@ -126,11 +126,11 @@ PHP_METHOD(CsrfProtect_CsrfProtect, checkPostToken) {
 	zephir_check_call_status();
 	zephir_get_strval(_3, _2);
 	ZEPHIR_CPY_WRT(postKey, _3);
-	zephir_array_fetch(&_4, _POST, postKey, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 29 TSRMLS_CC);
+	zephir_array_fetch(&_4, _POST, postKey, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 28 TSRMLS_CC);
 	if (ZEPHIR_IS_EMPTY(_4)) {
 		RETURN_MM_BOOL(0);
 	}
-	zephir_array_fetch(&_5, _POST, postKey, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 33 TSRMLS_CC);
+	zephir_array_fetch(&_5, _POST, postKey, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 32 TSRMLS_CC);
 	ZEPHIR_RETURN_CALL_SELF("checktoken", NULL, 0, _5, identifier);
 	zephir_check_call_status();
 	RETURN_MM();
@@ -177,12 +177,12 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getTokenIndex) {
 	zephir_get_strval(_4, _3);
 	ZEPHIR_CPY_WRT(postKey, _4);
 	if (ZEPHIR_IS_EMPTY(token)) {
-		zephir_array_fetch(&_5$$4, _POST, postKey, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 46 TSRMLS_CC);
+		zephir_array_fetch(&_5$$4, _POST, postKey, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 45 TSRMLS_CC);
 		if (ZEPHIR_IS_EMPTY(_5$$4)) {
 			RETURN_MM_BOOL(0);
 		}
 		ZEPHIR_OBS_VAR(_6$$4);
-		zephir_array_fetch(&_6$$4, _POST, postKey, PH_NOISY, "csrfprotect/CsrfProtect.zep", 49 TSRMLS_CC);
+		zephir_array_fetch(&_6$$4, _POST, postKey, PH_NOISY, "csrfprotect/CsrfProtect.zep", 48 TSRMLS_CC);
 		zephir_get_strval(_7$$4, _6$$4);
 		ZEPHIR_CPY_WRT(token, _7$$4);
 	}
@@ -191,7 +191,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getTokenIndex) {
 	if (zephir_is_true(_8)) {
 		ZEPHIR_CALL_SELF(&_10$$6, "prefixedidentifier", NULL, 0, identifier);
 		zephir_check_call_status();
-		zephir_array_fetch(&_9$$6, _SESSION, _10$$6, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 53 TSRMLS_CC);
+		zephir_array_fetch(&_9$$6, _SESSION, _10$$6, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 52 TSRMLS_CC);
 		ZEPHIR_RETURN_CALL_FUNCTION("array_search", NULL, 4, token, _9$$6);
 		zephir_check_call_status();
 		RETURN_MM();
@@ -229,7 +229,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, checkToken) {
 	if (!ZEPHIR_IS_FALSE_IDENTICAL(key)) {
 		ZEPHIR_CALL_SELF(&_1$$3, "prefixedidentifier", NULL, 0, identifier);
 		zephir_check_call_status();
-		zephir_array_fetch(&_0$$3, _SESSION, _1$$3, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 65 TSRMLS_CC);
+		zephir_array_fetch(&_0$$3, _SESSION, _1$$3, PH_NOISY | PH_READONLY, "csrfprotect/CsrfProtect.zep", 64 TSRMLS_CC);
 		zephir_array_unset(&_0$$3, key, PH_SEPARATE);
 		RETURN_MM_BOOL(1);
 	}
@@ -269,7 +269,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, isValidToken) {
 PHP_METHOD(CsrfProtect_CsrfProtect, getToken) {
 
 	zephir_fcall_cache_entry *_4 = NULL, *_23 = NULL;
-	int ZEPHIR_LAST_CALL_STATUS, tokenLength = 0, charsCount, i, _17$$5, tokenLimit$$6 = 0;
+	int ZEPHIR_LAST_CALL_STATUS, tokenLength = 0, charsCount = 0, i, _17$$5, tokenLimit$$6 = 0;
 	zval *identifier_param = NULL, *_SESSION, *_0 = NULL, *_1, *_2, *_3 = NULL, *_6, *_7, *_8 = NULL, *_14 = NULL, *_15 = NULL, *_24, _9$$4 = zval_used_for_init, _10$$4 = zval_used_for_init, _11$$4 = zval_used_for_init, _12$$4 = zval_used_for_init, *_13$$4 = NULL, *_16$$5, *_18$$6, *_19$$6, *_20$$6 = NULL, *_21$$6, *_22$$7;
 	zval *identifier = NULL, *tokenChars = NULL, *_5 = NULL, *token;
 
@@ -308,7 +308,7 @@ PHP_METHOD(CsrfProtect_CsrfProtect, getToken) {
 	tokenLength = zephir_get_intval(_8);
 	ZEPHIR_INIT_VAR(token);
 	ZVAL_EMPTY_STRING(token);
-	charsCount = zephir_fast_strlen_ev(tokenChars);
+	charsCount = (zephir_fast_strlen_ev(tokenChars) - 1);
 	i = 0;
 	while (1) {
 		if (!(i < tokenLength)) {
