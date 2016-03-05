@@ -86,7 +86,8 @@ class CsrfProtect
 		let tokenLength = (int) constant(get_called_class() . "::TOKEN_LENGTH");
 
 		string token = "";
-		int charsCount = strlen(tokenChars);
+		int charsCount;
+		let charsCount = strlen(tokenChars);
 		int i = 0;
 		while i < tokenLength {
 			let token .= substr(tokenChars, mt_rand(0, charsCount), 1);
