@@ -151,6 +151,31 @@ class Csrf extends \CsrfProtect\CsrfProtect
 ?>
 ```
 
+## The functionnal way
+
+```php
+<?php
+
+session_start();
+
+if (isset($_POST['message'])) {
+    if (\CsrfProtect\checkToken()) {
+        echo 'Thanks for your message!';
+    } else {
+        echo 'Sorry, your session expired.';
+    }
+}
+
+?>
+<form method="post" action="">
+    <textarea name="message"></textarea>
+    <input type="submit">
+    <?php echo \CsrfProtect\getTag(); ?>
+</form>
+```
+
+All the public CsrfProtect methods are also available as functions.
+
 
 ## Installation
 
