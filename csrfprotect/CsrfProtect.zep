@@ -34,7 +34,7 @@ class CsrfProtect
         string postKey;
         let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
-        if empty _POST[postKey] || _POST[postKey] {
+        if !isset _POST[postKey] || empty _POST[postKey] {
             return false;
         }
 
