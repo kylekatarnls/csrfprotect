@@ -1,5 +1,9 @@
 # CsrfProtect
 
+[![Latest Stable Version](https://poser.pugx.org/kylekatarnls/csrfprotect/v/stable.png)](https://packagist.org/packages/kylekatarnls/csrfprotect)
+[![Build Status](https://travis-ci.org/kylekatarnls/csrfprotect.svg?branch=master)](https://travis-ci.org/kylekatarnls/csrfprotect)
+[![StyleCI](https://styleci.io/repos/16852644/shield)](https://styleci.io/repos/16852644)
+
 PHP extencion to handle easily a really reliable CSRF protection
 
 ## Basic usage: Form protection
