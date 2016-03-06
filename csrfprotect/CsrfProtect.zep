@@ -14,7 +14,7 @@ class CsrfProtect
         let sessionStarted = version_compare(phpversion(), "5.4.0", ">=")
             ? (session_status() === PHP_SESSION_ACTIVE)
             : (session_id() !== "");
-        if !sessionStarted {
+        if !sessionStarted && !headers_sent() {
             session_start();
         }
     }
