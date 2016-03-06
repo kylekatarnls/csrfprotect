@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit
-  backupGlobals="false"
-  colors="true"
-  convertErrorsToExceptions="true"
-  convertNoticesToExceptions="true"
-  convertWarningsToExceptions="true"
-  bootstrap="tests/bootstrap.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    bootstrap="tests/bootstrap.php"
 >
-	<testsuites>
-		<testsuite name="SBP Test Suite">
-			<directory suffix=".php">tests/features</directory>
-		</testsuite>
-	</testsuites>
-	<filter>
-		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">csrfprotect</directory>
-		</whitelist>
-	</filter>
+    <testsuites>
+        <testsuite name="SBP Test Suite">
+            <directory suffix=".php">tests/functions</directory>
+            <directory suffix=".php">tests/methods</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">csrfprotect</directory>
+        </whitelist>
+    </filter>
 </phpunit>

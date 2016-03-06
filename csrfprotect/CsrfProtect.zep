@@ -126,3 +126,34 @@ class CsrfProtect
         ">";
     }
 }
+
+function checkPostToken(string identifier = "") -> boolean
+{
+    return CsrfProtect::checkPostToken(identifier);
+}
+
+function getTokenIndex(string token = "", string identifier = "") -> int | string | boolean
+{
+    return CsrfProtect::getTokenIndex(token, identifier);
+}
+
+function checkToken(string token = "", string identifier = "") -> boolean
+{
+    return CsrfProtect::checkToken(token, identifier);
+}
+
+function isValidToken(string token = "", string identifier = "") -> boolean
+{
+    return CsrfProtect::isValidToken(token, identifier);
+}
+
+function getToken(string identifier = "") -> string
+{
+    return CsrfProtect::getToken(identifier);
+}
+
+function getTag(string identifier = "") -> string
+{
+    return CsrfProtect::getTag(identifier);
+}
+
