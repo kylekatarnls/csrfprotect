@@ -20,9 +20,9 @@ class GenerateTagTest extends \PHPUnit_Framework_TestCase
         $tag = Csrf::getTag();
         $tag = preg_replace('`\s+`', '', strtr($tag, '\'', '"'));
         $this->assertContains('name="' . Csrf::POST_KEY . '"', $tag, 'The CSRF tag name should be Csrf::POST_KEY');
-        $this->assetTrue(preg_match('`value="([^"]*)"`', $tag, $value) > 0, 'The CSRF tag value should be catchable');
+        $this->assertTrue(preg_match('`value="([^"]*)"`', $tag, $value) > 0, 'The CSRF tag value should be catchable');
         $value = $value[1];
-        $this->assetTrue(preg_match('`^[' . preg_quote(Csrf::TOKEN_CHARS) . ']+$`', $value) > 0, 'The CSRF tag value should only use chars in Csrf::TOKEN_CHARS');
-        $this->assetSame(strlen($value), Csrf::TOKEN_LENGTH, 'The CSRF tag value length should be Csrf::TOKEN_LENGTH');
+        $this->assertTrue(preg_match('`^[' . preg_quote(Csrf::TOKEN_CHARS) . ']+$`', $value) > 0, 'The CSRF tag value should only use chars in Csrf::TOKEN_CHARS');
+        $this->assertSame(strlen($value), Csrf::TOKEN_LENGTH, 'The CSRF tag value length should be Csrf::TOKEN_LENGTH');
     }
 }

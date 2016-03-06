@@ -1,0 +1,11 @@
+---
+
+ratings:
+  paths:
+  - csrfprotect/**
+  - "**.zep"
+
+exclude_paths:
+- .temp/
+- tests/
+- ext/

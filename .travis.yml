@@ -1,32 +1,28 @@
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
-  - 7.0
-  - hhvm
-  - nightly
 
 before_script:
-  - travis_retry sudo apt-get update
-  - travis_retry sudo apt-get install git gcc make re2c php5 php5-json php5-dev libpcre3-dev
+  - sudo apt-get -qq update
+  - sudo apt-get install -y git gcc make re2c libpcre3-dev
   - travis_retry git clone https://github.com/phalcon/zephir
-  - travis_retry cd zephir && ./install-json && ./install -c && cd .. && rm -r zephir
-  - travis_retry git clone https://github.com/kylekatarnls/csrfprotect
-  - travis_retry cd csrfprotect && zephir build && cd .. && rm -r csrfprotect
-  - phpenv config-add tests/conf/php-csrfprotect.ini
+  - travis_retry cd zephir && ./install -c && cd ..
+  - travis_retry mkdir codeclimate && cd codeclimate && composer require --no-interaction codeclimate/php-test-reporter:dev-master && cd ..
+  - zephir build
+  - echo "extension=csrfprotect.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
+  - phpunit --verbose --coverage-text --coverage-clover=coverage.xml
 
 after_script:
-  - vendor/bin/test-reporter --coverage-report coverage.xml
+  - codeclimate/vendor/bin/test-reporter --coverage-report coverage.xml
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 addons:
   code_climate:
-    repo_token: 3b348e5e3787bb2850977e8ae853a7fb3c370d539dec3a018adf088e9f7fed31
+    repo_token: 6316411d7a006bbe9742edb5462e63fac433ace5050cf3ffd448f0e19f61355d
