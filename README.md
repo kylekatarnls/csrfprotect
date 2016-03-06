@@ -1,6 +1,6 @@
 # CsrfProtect
 
-[![Latest Stable Version](https://poser.pugx.org/kylekatarnls/csrfprotect/v/stable.png)](https://packagist.org/packages/kylekatarnls/csrfprotect)
+[![Latest Stable Version](https://poser.pugx.org/kylekatarnls/csrfprotect/v/stable.png?)](https://packagist.org/packages/kylekatarnls/csrfprotect)
 [![Build Status](https://travis-ci.org/kylekatarnls/csrfprotect.svg?branch=master)](https://travis-ci.org/kylekatarnls/csrfprotect)
 [![StyleCI](https://styleci.io/repos/16852644/shield)](https://styleci.io/repos/16852644)
 
@@ -164,11 +164,11 @@ git clone https://github.com/phalcon/zephir
 cd zephir
 ./install-json
 ./install -c
+cd ..
 ```
 
 (Optionnal) Then you can remove Zephir sources:
 ```shell
-cd ..
 rm -r zephir
 ```
 
@@ -182,13 +182,11 @@ If it's not, please see: http://docs.zephir-lang.com/en/latest/install.html
 Now you can download and build CsrfProtect
 ```shell
 git clone https://github.com/kylekatarnls/csrfprotect
-cd csrfprotect
 zephir build
 ```
 
 (Optionnal) Then you can remove CsrfProtect sources:
 ```shell
-cd ..
 rm -r csrfprotect
 ```
 
