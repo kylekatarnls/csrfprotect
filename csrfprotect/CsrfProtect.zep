@@ -34,7 +34,7 @@ class CsrfProtect
         string postKey;
         let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
-        if empty _POST[postKey] {
+        if empty _POST[postKey] || _POST[postKey] {
             return false;
         }
 
@@ -49,7 +49,7 @@ class CsrfProtect
         let postKey = (string) constant(get_called_class() . "::POST_KEY");
 
         if empty token {
-            if empty _POST[postKey] {
+            if !isset _POST[postKey] || empty _POST[postKey] {
                 return false;
             }
             let token = (string) _POST[postKey];
