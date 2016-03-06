@@ -10,7 +10,8 @@
 >
 	<testsuites>
 		<testsuite name="SBP Test Suite">
-			<directory suffix=".php">tests/features</directory>
+                        <directory suffix=".php">tests/functions</directory>
+ 			<directory suffix=".php">tests/methods</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
