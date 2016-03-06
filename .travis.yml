@@ -12,12 +12,12 @@ before_script:
   - sudo apt-get install -y git gcc make re2c libpcre3-dev
   - travis_retry git clone https://github.com/phalcon/zephir
   - travis_retry cd zephir && ./install -c && cd ..
-  - travis_retry composer install --no-interaction --prefer-source --dev
+  - travis_retry composer require --no-interaction codeclimate/php-test-reporter:dev-master
   - zephir build
   - echo "extension=csrfprotect.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
+  - phpunit --verbose --coverage-text --coverage-clover=coverage.xml
 
 after_script:
   - vendor/bin/test-reporter --coverage-report coverage.xml
