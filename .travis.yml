@@ -13,7 +13,7 @@ before_script:
   - travis_retry git clone https://github.com/phalcon/zephir
   - travis_retry cd zephir && ./install -c && cd .. && rm -rf zephir
   - travis_retry composer install --no-interaction --prefer-source --dev
-  - travis_retry sudo zephir build
+  - travis_retry zephir build
   - echo "extension=csrfprotect.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 script:
