@@ -6,46 +6,9 @@ class SessionTest extends \PHPUnit_Framework_TestCase
 {
     public function testSessionAutoStart()
     {
-        ob_start();
+        $results = $GLOBALS['_sessionTestsResults'];
 
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::getTokenIndex();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::getToken();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::getTag();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::checkToken();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::checkPostToken();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::isValidToken();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        Csrf::isValidToken();
-        $this->assertFalse(!session_id());
-        session_write_close();
-        $this->assertTrue(!session_id());
-
-        ob_end_clean();
+        array_walk($results->trues, array($this, 'assertTrue'));
+        array_walk($results->falses, array($this, 'assertFalse'));
     }
 }
