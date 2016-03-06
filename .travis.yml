@@ -5,14 +5,13 @@ php:
   - 5.5
   - 5.6
   - 7.0
-  - hhvm
   - nightly
 
 before_script:
   - sudo apt-get -qq update
   - sudo apt-get install -y git gcc make re2c libpcre3-dev
   - travis_retry git clone https://github.com/phalcon/zephir
-  - travis_retry cd zephir && ./install -c && cd .. && rm -r zephir
+  - travis_retry cd zephir && ./install -c && cd .. && rm -rf zephir
   - phpenv config-add tests/conf/php-csrfprotect.ini
   - travis_retry composer install --no-interaction --prefer-source --dev
   - cd csrfprotect
