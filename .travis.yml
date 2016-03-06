@@ -15,9 +15,10 @@ before_script:
   - travis_retry composer require --no-interaction codeclimate/php-test-reporter:dev-master
   - zephir build
   - echo "extension=csrfprotect.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - phpenv config-rm xdebug.ini
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
+  - phpdbg -qrr vendor/bin/phpunit --verbose --coverage-text --coverage-clover=coverage.xml
 
 after_script:
   - vendor/bin/test-reporter --coverage-report coverage.xml
