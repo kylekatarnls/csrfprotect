@@ -57,4 +57,3 @@ $_sessionTestsResults = (object) array(
 
 unset($trues);
 unset($falses);
-
