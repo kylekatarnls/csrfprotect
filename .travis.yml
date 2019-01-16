@@ -8,7 +8,7 @@ php:
 before_script:
   - sudo apt-get -qq update
   - sudo apt-get install -y git gcc make re2c libpcre3-dev
-  - travis_retry git clone https://github.com/phalcon/zephir
+  - travis_retry git clone  --single-branch --branch 0.10.x https://github.com/phalcon/zephir
   - travis_retry cd zephir && ./install -c && cd ..
   - travis_retry mkdir codeclimate && cd codeclimate && composer require --no-interaction codeclimate/php-test-reporter:dev-master && cd ..
   - zephir build
